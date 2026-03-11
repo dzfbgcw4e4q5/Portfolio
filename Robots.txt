@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dzfbgcw4e4q5.github.io/Portfolio/sitemap.xml
