@@ -13,8 +13,8 @@
     ═══════════════════════════════════════════════════ */
     :root {
       --bg:          #020408;
-      --bg-surface:  #0a0e14;
-      --bg-elevated: #121820;
+      --bg-surface:  #101620;
+      --bg-elevated: #1a2332;
       --bg2:         #0b1419;
       --bg3:         #111c24;
       --gold:        #d4af37;
@@ -25,7 +25,7 @@
       --white:       #ffffff;
       --accent:      #00f5d4;
       --accent-dim:  rgba(0, 245, 212, 0.08);
-      --border:      rgba(212, 175, 55, 0.15);
+      --border:      rgba(212, 175, 55, 0.25);
       --glass-bg:    rgba(10, 14, 20, 0.7);
       --glass-border:rgba(255, 255, 255, 0.05);
       --nav-bg:      rgba(2, 4, 8, 0.85);
@@ -1749,12 +1749,12 @@
       position: relative;
       overflow: hidden;
       transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 1px rgba(255, 255, 255, 0.05);
     }
     
     .about-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.1);
     }
     
     /* Bio Card - Large left */
@@ -1843,7 +1843,7 @@
       height: 100%;
       object-fit: contain;
       border-radius: 12px;
-      max-height: -115px;
+      max-height: 100%;
     }
     
     .about-status-badge {
@@ -1985,8 +1985,8 @@
       position: absolute;
       inset: 0;
       background-image: 
-        linear-gradient(rgba(212, 175, 55, 0.4) 1px, transparent 1px), 
-        linear-gradient(90deg, rgba(212, 175, 55, 0.4) 1px, transparent 1px);
+        linear-gradient(rgba(212, 175, 55, 0.15) 1px, transparent 1px), 
+        linear-gradient(90deg, rgba(212, 175, 55, 0.15) 1px, transparent 1px);
       background-size: 50px 50px;
       opacity: 1;
     }
@@ -1994,12 +1994,12 @@
     /* Grid intersection dots */
     .about-grid-dot {
       position: absolute;
-      width: 10px;
-      height: 10px;
+      width: 4px;
+      height: 4px;
       background: var(--gold);
       border-radius: 50%;
-      opacity: 1;
-      box-shadow: 0 0 15px var(--gold), 0 0 30px rgba(212, 175, 55, 0.5);
+      opacity: 0.6;
+      box-shadow: 0 0 12px var(--gold), 0 0 20px rgba(212, 175, 55, 0.3);
     }
     
     .about-grid-dot:nth-child(1) { top: 10%; left: 15%; }
@@ -2016,50 +2016,52 @@
       transform: translate(-50%, -50%);
       width: 400px;
       height: 400px;
-      border: 2px solid var(--gold);
+      border: 1px solid var(--gold);
       border-radius: 50%;
-      opacity: 0.8;
+      opacity: 0.15;
       animation: aboutGridPulse 4s ease-in-out infinite;
     }
     
     @keyframes aboutGridPulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
-      50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.4; }
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.15; }
+      50% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.1; }
     }
     
     /* Light mode adjustments */
     body.light .about-grid-lines {
       background-image: 
-        linear-gradient(rgba(133, 77, 14, 0.5) 1px, transparent 1px), 
-        linear-gradient(90deg, rgba(133, 77, 14, 0.5) 1px, transparent 1px);
+        linear-gradient(rgba(133, 77, 14, 0.1) 1px, transparent 1px), 
+        linear-gradient(90deg, rgba(133, 77, 14, 0.1) 1px, transparent 1px);
     }
     
     body.light .about-grid-dot {
       background: #7a4f10;
-      box-shadow: 0 0 15px #7a4f10, 0 0 30px rgba(122, 79, 16, 0.6);
+      box-shadow: 0 0 10px #7a4f10;
+      opacity: 0.3;
     }
     
     body.light .about-grid-pulse {
       border-color: #7a4f10;
+      opacity: 0.1;
     }
     
     /* Mobile responsive for about grid */
     @media (max-width: 900px) {
       .about-grid-lines {
         background-size: 40px 40px;
-        opacity: 1;
+        opacity: 0.95;
       }
       .about-grid-dot {
-        width: 8px;
-        height: 8px;
-        opacity: 1;
+        width: 3px;
+        height: 3px;
+        opacity: 0.5;
       }
     }
     
     @media (max-width: 600px) {
       .about-grid-lines {
         background-size: 35px 35px;
-        opacity: 1;
+        opacity: 0.9;
       }
       .about-grid-dot:nth-child(2),
       .about-grid-dot:nth-child(4),
@@ -2410,7 +2412,7 @@
     
     @media (max-width: 600px) {
       .skills-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 0.6rem;
         padding: 0 0.5rem;
       }
@@ -2678,7 +2680,8 @@
       .hero-ctas { display: flex; flex-direction: row !important; flex-wrap: nowrap !important; gap: 0.5rem !important; margin-bottom: 2rem; justify-content: flex-start; } .btn-gold, .btn-ghost { width: auto !important; min-width: auto; padding: 0.5rem 0.8rem !important; font-size: 0.55rem !important; white-space: nowrap; }
       .scroll-indicator { bottom: 0.5rem; }
       .bento-grid { grid-template-columns: 1fr; } .bento-card.large, .bento-card.wide { grid-column: span 1; }
-      .skills-filter { gap: 0.5rem; } .filter-btn { font-size: 0.65rem; padding: 0.5rem 0.8rem; } .skills-container { grid-template-columns: 1fr; gap: 1rem; }
+      .skills-filter { gap: 0.5rem; } .filter-btn { font-size: 0.65rem; padding: 0.5rem 0.8rem; } .skills-container { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+      .skill-card { padding: 0.85rem; } .skill-ring-container { width: 44px; height: 44px; } .skill-ring-center { font-size: 0.65rem; } .skill-name { font-size: 0.75rem; } .skill-category-label { font-size: 0.55rem; }
       .services-grid { grid-template-columns: 1fr; } .service-card { padding: 1.5rem; }
       .exp-list::before { display: none; } .exp-item { grid-template-columns: 1fr; gap: 1rem; padding-left: 0; } .exp-item::before { display: none; }
       .projects-grid { grid-template-columns: 1fr; } .project-card { padding: 1.5rem; } .project-num { font-size: 3rem; } .project-buttons { flex-direction: column; } .project-btn { width: 100%; justify-content: center; }
