@@ -144,39 +144,237 @@
       align-items: center;
       justify-content: center;
       font-size: 1.2rem;
+      overflow: hidden;
     }
-    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
-    .back-to-top:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5); }
+    .back-to-top.visible { 
+      opacity: 1; 
+      visibility: visible; 
+      transform: translateY(0);
+      animation: floatButton 3s ease-in-out infinite;
+    }
+    .back-to-top:hover { 
+      transform: translateY(-5px) scale(1.05); 
+      box-shadow: 0 12px 35px rgba(212, 175, 55, 0.6);
+    }
+    .back-to-top:active {
+      transform: translateY(-2px) scale(0.95);
+    }
+    
+    /* Floating animation when visible */
+    @keyframes floatButton {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    
+    /* Arrow bounce animation */
+    .back-to-top i {
+      animation: arrowBounce 2s ease-in-out infinite;
+    }
+    
+    @keyframes arrowBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+    
+    /* Ripple effect on click */
+    .back-to-top::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      opacity: 0;
+    }
+    
+    .back-to-top.ripple::before {
+      animation: rippleEffect 0.6s ease-out;
+    }
+    
+    @keyframes rippleEffect {
+      0% {
+        transform: scale(0);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(2.5);
+        opacity: 0;
+      }
+    }
+    
+    /* Glow pulse animation */
+    .back-to-top.visible::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: transparent;
+      border: 2px solid var(--gold);
+      opacity: 0;
+      animation: glowPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.1); }
+    }
+    
+    /* Rotation on hover */
+    .back-to-top:hover i {
+      animation: arrowBounce 0.5s ease-in-out infinite;
+    }
 
-    /* THEME TOGGLE */
-    .theme-switch { position: relative; display: flex; align-items: center; margin-left: 1.2rem; }
-    .theme-switch-input { opacity: 0; width: 0; height: 0; position: absolute; }
-    .theme-switch-label {
+    /* YOYO THEME TOGGLE - Bouncy animated switch */
+    .yoyo-switch {
+      position: relative; display: flex; align-items: center;
+      margin-left: 1.2rem; /* Desktop positioning */
+      --switch-size: 60px;
+      --slider-size: 26px;
+      --track-height: 34px;
+    }
+
+    .yoyo-switch-input {
+      opacity: 0; width: 0; height: 0; position: absolute;
+    }
+
+    .yoyo-switch-label {
       position: relative; display: flex; align-items: center; justify-content: space-between;
-      width: 60px; height: 32px; background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 999px; cursor: pointer; transition: all 0.3s ease; padding: 4px;
-      box-shadow: inset 0 2px 8px rgba(0,0,0,0.2);
+      width: var(--switch-size); height: var(--track-height);
+      background: linear-gradient(145deg, var(--bg3), rgba(0,0,0,0.3));
+      border: 2px solid var(--border);
+      border-radius: 50px; cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 
+        inset 0 2px 8px rgba(0,0,0,0.4),
+        0 4px 12px rgba(0,0,0,0.2);
+      overflow: hidden;
     }
-    .theme-switch-label:hover { border-color: var(--gold); }
-    .theme-switch-slider {
-      position: absolute; top: 3px; left: 3px; width: 24px; height: 24px;
-      background: var(--gold); border-radius: 50%; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-    .theme-switch-input:checked + .theme-switch-label .theme-switch-slider { transform: translateX(28px); }
-    .theme-switch-icons { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0 6px; }
-    .theme-switch-icon { font-size: 0.75rem; color: var(--text-dim); transition: color 0.3s ease; }
-    .theme-switch-icon.moon { color: var(--gold); }
-    .theme-switch-icon.sun { color: var(--text-dim); }
-    .theme-switch-input:checked + .theme-switch-label .theme-switch-icon.moon { color: var(--text-dim); }
-    .theme-switch-input:checked + .theme-switch-label .theme-switch-icon.sun { color: var(--accent); }
 
+    .yoyo-switch-label::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg,
+        radial-gradient(circle at left, var(--gold-dim) 0%, transparent 50%),
+        radial-gradient(circle at right, var(--accent-dim) 0%, transparent 50%)
+      );
+      opacity: 0; transition: opacity 0.3s ease;
+    }
+
+    .yoyo-switch-label:hover {
+      border-color: var(--gold);
+      transform: scale(1.02);
+      box-shadow: 
+        inset 0 2px 8px rgba(0,0,0,0.4),
+        0 8px 20px rgba(212,175,55,0.2);
+    }
+
+    .yoyo-switch-label:hover::before { opacity: 0.6; }
+
+    .yoyo-switch-track {
+      position: absolute; inset: 3px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 45px;
+      overflow: hidden;
+    }
+
+    .yoyo-switch-slider {
+      position: absolute; top: 50%; left: 6px;
+      width: var(--slider-size); height: var(--slider-size);
+      margin-top: calc(-1 * var(--slider-size) / 2);
+      background: linear-gradient(145deg, var(--gold), var(--gold-light));
+      border-radius: 50%;
+      transform: translateX(0);
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Yoyo bounce */
+      box-shadow: 
+        0 4px 12px rgba(212,175,55,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.3),
+        0 0 0 2px rgba(255,255,255,0.2);
+      z-index: 2;
+    }
+
+    .yoyo-switch-slider::after {
+      content: ''; position: absolute; inset: 3px;
+      border-radius: 50%; background: rgba(255,255,255,0.9);
+      transition: all 0.3s ease;
+    }
+
+    .yoyo-switch-input:checked + .yoyo-switch-label {
+      background: linear-gradient(145deg, rgba(0,245,212,0.1), var(--bg3));
+      border-color: var(--accent);
+    }
+
+    .yoyo-switch-input:checked + .yoyo-switch-label .yoyo-switch-slider {
+      transform: translateX(calc(var(--switch-size) - var(--slider-size) - 12px)) scale(0.95);
+      background: linear-gradient(145deg, var(--accent), #00d4aa);
+      box-shadow: 
+        0 4px 12px rgba(0,245,212,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.3),
+        0 0 0 2px rgba(255,255,255,0.2);
+    }
+
+    .yoyo-switch-icons {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; padding: 0 12px; pointer-events: none;
+    }
+
+    .yoyo-icon {
+      font-size: 0.8rem; 
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      position: relative;
+    }
+
+    .yoyo-icon.moon { 
+      color: var(--gold); 
+      transform: rotate(0deg) scale(1);
+    }
+
+    .yoyo-icon.sun { 
+      color: var(--text-dim); 
+      transform: rotate(180deg) scale(0.85);
+    }
+
+    .yoyo-switch-input:checked + .yoyo-switch-label .yoyo-icon.moon { 
+      color: var(--text-dim); 
+      transform: rotate(90deg) scale(0.85);
+    }
+
+    .yoyo-switch-input:checked + .yoyo-switch-label .yoyo-icon.sun { 
+      color: var(--accent); 
+      transform: rotate(0deg) scale(1);
+    }
+
+    /* Press ripple effect */
+    .yoyo-switch-label:active {
+      transform: scale(0.98);
+    }
+
+    .yoyo-switch-input:checked + .yoyo-switch-label:active .yoyo-switch-slider {
+      transform: translateX(calc(var(--switch-size) - var(--slider-size) - 12px)) scale(0.92);
+    }
+
+    /* MOBILE RESPONSIVE */
     @media (max-width: 900px) {
-      .theme-switch { margin-left: 0; }
-      .theme-switch-label { width: 52px; height: 28px; }
-      .theme-switch-slider { width: 20px; height: 20px; top: 3px; left: 3px; }
-      .theme-switch-input:checked + .theme-switch-label .theme-switch-slider { transform: translateX(24px); }
-      .theme-switch-icon { font-size: 0.65rem; }
+      .yoyo-switch { 
+        margin-left: 0; /* Mobile positioning */
+        --switch-size: 52px;
+        --slider-size: 22px;
+        --track-height: 28px;
+      }
+
+      .yoyo-switch-label { width: var(--switch-size); height: var(--track-height); }
+      
+      .yoyo-switch-slider { 
+        left: 4px; 
+        width: var(--slider-size); 
+        height: var(--slider-size);
+      }
+
+      .yoyo-switch-input:checked + .yoyo-switch-label .yoyo-switch-slider { 
+        transform: translateX(calc(var(--switch-size) - var(--slider-size) - 8px)) scale(0.95); 
+      }
+
+      .yoyo-icon { font-size: 0.7rem; }
     }
 
     /* RESET */
@@ -1727,7 +1925,6 @@
     .about-avatar-card {
       grid-column: 3;
       grid-row: 1;
-      background: var(--bg-elevated);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1742,8 +1939,10 @@
     .about-languages-card { grid-column: 3; grid-row: 2; min-height: 200px; padding: 2.5rem; }
     
     .about-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(1px);
+      -webkit-backdrop-filter: blur(1px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 16px;
       padding: 2rem;
       position: relative;
@@ -1829,7 +2028,6 @@
     .about-avatar-card {
       grid-column: span 1;
       grid-row: span 1;
-      background: var(--bg-elevated);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1950,12 +2148,16 @@
     }
     
     /* Light theme overrides for about section */
+    body.light .about-card {
+      background: rgba(255, 255, 255, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(1px);
+      -webkit-backdrop-filter: blur(1px);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+    }
     body.light .about-scroll-btn {
       background: linear-gradient(135deg, #7a4f10, #9a6520);
       color: #f7f3ed;
-    }
-    body.light .about-avatar-card {
-      background: #ffffff;
     }
     body.light .about-info-icon-blue {
       background: rgba(59, 130, 246, 0.1);
@@ -2481,7 +2683,7 @@
     .tag:hover { background: var(--gold-dim); filter: brightness(1.2); }
 
     /* PROJECTS */
-    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--border); }
+    .projects-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; background: var(--border); }
     .project-card { background: var(--bg-surface); border: 1px solid var(--glass-border); padding: 3rem; position: relative; overflow: hidden; transition: var(--transition); cursor: default; backdrop-filter: blur(10px); }
     .project-card:hover { background: var(--bg-elevated); transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); border-color: var(--gold-dim); }
     .project-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,transparent 40%,var(--gold-dim) 100%); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; }
@@ -2762,8 +2964,19 @@
       <li><a href="#education">Education</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <div style="display:flex;align-items:center;gap:0.8rem;">
-      <div class="theme-switch"><input type="checkbox" class="theme-switch-input" id="themeToggle"><label class="theme-switch-label" for="themeToggle"><span class="theme-switch-slider"></span><span class="theme-switch-icons"><i class="fas fa-moon theme-switch-icon moon"></i><i class="fas fa-sun theme-switch-icon sun"></i></span></label></div>
+      <div style="display:flex;align-items:center;gap:0.8rem;">
+      <div class="yoyo-switch">
+        <input type="checkbox" class="yoyo-switch-input" id="themeToggle">
+        <label class="yoyo-switch-label" for="themeToggle">
+          <span class="yoyo-switch-track">
+            <span class="yoyo-switch-slider"></span>
+          </span>
+          <span class="yoyo-switch-icons">
+            <i class="fas fa-moon yoyo-icon moon"></i>
+            <i class="fas fa-sun yoyo-icon sun"></i>
+          </span>
+        </label>
+      </div>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
     </div>
   </nav>
@@ -3213,6 +3426,7 @@
     <div class="projects-grid">
       <div class="project-card fadeInUp"><span class="project-num">01</span><div class="project-icon"><i class="fas fa-home"></i></div><h3 class="project-title">Home Service Application</h3><p class="project-desc">Cross-platform mobile application for service providers.</p><div class="project-features"><span class="project-feature">Real-time booking system</span><span class="project-feature">Payment gateway</span><span class="project-feature">Admin dashboard</span></div><div class="project-tags"><span class="tag">React Native</span><span class="tag">Node.js</span></div></div>
       <div class="project-card fadeInUp delay-100"><span class="project-num">02</span><div class="project-icon"><i class="fas fa-graduation-cap"></i></div><h3 class="project-title">University Application</h3><p class="project-desc">Full-featured university portal for students and faculty.</p><div class="project-features"><span class="project-feature">Student management</span><span class="project-feature">Course registration</span><span class="project-feature">Grade management</span></div><div class="project-tags"><span class="tag">React.js</span><span class="tag">Node.js</span><span class="tag">MySQL</span></div></div>
+      <div class="project-card fadeInUp delay-200"><span class="project-num">03</span><div class="project-icon"><i class="fas fa-university"></i></div><h3 class="project-title">Campus1 — Institutional Campus Management Platform</h3><p class="project-desc">A web-based campus management platform developed to help educational institutions manage academic and administrative operations through a centralized digital system with secure login access and role-based dashboards.</p><div class="project-features"><span class="project-feature">Secure authentication and login system</span><span class="project-feature">Role-based dashboards (Admin / Faculty / Student)</span><span class="project-feature">Student information and academic record management</span><span class="project-feature">Attendance tracking system</span><span class="project-feature">Examination and academic data management</span><span class="project-feature">Structured and responsive web interface</span></div><div class="project-tags"><span class="tag">React.js</span><span class="tag">MySQL</span><span class="tag">Node.js</span><span class="tag">Express.js</span><span class="tag">JavaScript</span></div></div>
     </div>
   </section>
 
@@ -3242,10 +3456,10 @@
       </div>
       <div class="contact-form reveal">
         <form id="contactForm">
-          <div class="form-group"><label>Your Name</label><input type="text" class="form-control" id="name" placeholder="John Doe" required></div>
-          <div class="form-group"><label>Email Address</label><input type="email" class="form-control" id="email" placeholder="john@example.com" required></div>
-          <div class="form-group"><label>Subject</label><input type="text" class="form-control" id="subject" placeholder="Project Inquiry" required></div>
-          <div class="form-group"><label>Message</label><textarea class="form-control" id="message" placeholder="Tell me about your project..." required></textarea></div>
+          <div class="form-group"><label>Your Name</label><input type="text" class="form-control" id="name" placeholder="Enter Your Full Name" required></div>
+          <div class="form-group"><label>Email Address</label><input type="email" class="form-control" id="email" placeholder="Enter Your Email Address" required></div>
+          <div class="form-group"><label>Subject</label><input type="text" class="form-control" id="subject" placeholder="What Is This Message About ?" required></div>
+          <div class="form-group"><label>Message</label><textarea class="form-control" id="message" placeholder="Describe Your Project or uestion..." required></textarea></div>
           <button type="submit" class="btn-submit" id="submitBtn"><span class="spinner"></span><span class="btn-text">Send Message <i class="fas fa-arrow-right"></i></span></button>
         </form>
         <div class="form-success" id="formSuccess"><div class="form-success-icon"><i class="fas fa-check"></i></div><h4>Message Sent!</h4><p>Thank you for reaching out. I'll get back to you soon.</p></div>
@@ -3358,7 +3572,13 @@
       if (window.scrollY > 500) backToTop.classList.add('visible');
       else backToTop.classList.remove('visible');
     });
-    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    backToTop.addEventListener('click', function(e) {
+      // Add ripple effect
+      this.classList.add('ripple');
+      setTimeout(() => this.classList.remove('ripple'), 600);
+      // Smooth scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
 
     // ═══════════════════════════════════════════════════
     // SCROLL REVEAL - FADE IN ENTRANCE ANIMATIONS
